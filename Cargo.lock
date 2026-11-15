@@ -166,6 +166,7 @@ dependencies = [
  "assert_cmd",
  "failure",
  "predicates",
+ "serde_json",
  "tempfile",
  "walkdir",
 ]
