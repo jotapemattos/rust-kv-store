@@ -6,7 +6,9 @@ edition = "2024"
 description = "A key-value store"
 
 [dependencies]
+clap = { version = "4.6.7", features = ["derive"] }
 failure = "0.1.8"
+serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.154"
 
 [dev-dependencies]
