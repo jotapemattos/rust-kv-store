@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{KvsError, Result};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
@@ -49,8 +49,17 @@ impl KvStore {
     }
 
     /// Remove a given key. Errors if the key doesn't exist.
-    pub fn remove(&mut self, _key: String) -> Result<()> {
-        todo!()
+    pub fn remove(&mut self, key: String) -> Result<()> {
+        if !self.index.contains_key(&key) {
+            return Err(KvsError::KeyNotFound);
+        }
+        let cmd = Command::Rm { key: key.clone() };
+        serde_json::to_writer(&mut self.log, &cmd)?;
+        self.log.flush()?;
+
+        self.index.remove(&key);
+
+        Ok(())
     }
 }
 
