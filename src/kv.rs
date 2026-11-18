@@ -63,6 +63,10 @@ impl KvStore {
     }
 }
 
+/// A command stored in the log
+///
+/// Serialized as JSON: human-readable, so the log is easy to inspect and debug.
+/// A binary format like biincode would be smaller and faster.
 #[derive(Serialize, Deserialize, Debug)]
 enum Command {
     Set { key: String, value: String },
