@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use kvs::{KvStore, Result};
+use kvs::{KvStore, KvsError, Result};
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -27,7 +27,17 @@ fn main() -> Result<()> {
             store.set(key, value)?;
         }
         Commands::Get { .. } => todo!("implemented in Part 4"),
-        Commands::Rm { .. } => todo!("implemented in step 7"),
+        Commands::Rm { key } => {
+            let mut store = KvStore::open(std::env::current_dir()?)?;
+            match store.remove(key) {
+                Ok(()) => {}
+                Err(KvsError::KeyNotFound) => {
+                    println!("Key not found");
+                    std::process::exit(1);
+                }
+                Err(e) => return Err(e),
+            }
+        }
     }
 
     Ok(())
